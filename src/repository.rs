@@ -12,3 +12,8 @@ pub fn insert_note(note: Note) {
 
     println!("Note added!");
 }
+
+pub fn get_all_notes() -> Vec<Note> {
+    let data = database::read_database().unwrap();
+    data.notes
+}

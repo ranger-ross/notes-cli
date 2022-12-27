@@ -13,7 +13,7 @@ pub fn handle_command(args: NoteArgs) {
     };
 
     match args.action {
-        NoteAction::List => println!("List"),
+        NoteAction::List => list_notes(),
         NoteAction::Show => println!("Show"),
         NoteAction::Create { name } => create_note(name),
         NoteAction::Delete => println!("Delete"),
@@ -39,4 +39,17 @@ fn create_note(name: Option<String>) {
     };
 
     repository::insert_note(note);
+}
+
+fn list_notes() {
+    let notes = repository::get_all_notes();
+
+    let result = notes.into_iter().map(|note| {
+        let mut line = String::from("- ");
+        line.push_str(note.title.as_str());
+        line.push_str("\n");
+        line
+    }).collect::<String>();
+
+    println!("{}", result);
 }
