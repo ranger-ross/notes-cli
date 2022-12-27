@@ -1,3 +1,11 @@
+mod command;
+mod handler;
+
+use crate::command::NoteArgs;
+use clap::Parser;
+
 fn main() {
-    println!("Hello, world!");
+    let args = NoteArgs::parse();
+
+    handler::handle_command(args);
 }
