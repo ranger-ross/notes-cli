@@ -1,9 +1,17 @@
 use crate::command::NoteAction;
 use crate::command::NoteArgs;
+use crate::database;
 use crate::note::Note;
+use crate::repository;
 use chrono::Utc;
 
 pub fn handle_command(args: NoteArgs) {
+
+    match database::init_database() {
+        Ok(()) => (),
+        Err(error) => panic!("Problem opening the database file: {:?}", error),
+    };
+
     match args.action {
         NoteAction::List => println!("List"),
         NoteAction::Show => println!("Show"),
@@ -14,7 +22,7 @@ pub fn handle_command(args: NoteArgs) {
 }
 
 fn create_note(name: Option<String>) {
-    let now = Utc::now();
+    let now = Utc::now().timestamp();
 
     let title: String;
 
@@ -30,5 +38,5 @@ fn create_note(name: Option<String>) {
         last_updated_timestamp: now,
     };
 
-    println!("Create, {:?}", note);
+    repository::insert_note(note);
 }
