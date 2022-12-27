@@ -1,5 +1,6 @@
 mod command;
 mod handler;
+mod note;
 
 use crate::command::NoteArgs;
 use clap::Parser;
