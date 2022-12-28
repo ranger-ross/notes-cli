@@ -11,7 +11,7 @@ pub enum NoteAction {
     /// Create a new note
     Create { name: Option<String> },
     /// Edit a note by note id
-    Edit,
+    Edit { id: usize },
     /// Delete a note by note id
     Delete { id: usize },
     /// Display a note by note id

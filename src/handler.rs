@@ -16,7 +16,7 @@ pub fn handle_command(args: NoteArgs) {
         NoteAction::Show { id } => show_note(id),
         NoteAction::Create { name } => create_note(name),
         NoteAction::Delete { id } => delete_note(id),
-        NoteAction::Edit => println!("Edit"),
+        NoteAction::Edit { id }  => edit_note(id),
     }
 }
 
@@ -86,4 +86,8 @@ fn show_note(id: usize) {
     } else {
         println!("{}", note.body);
     }
+}
+
+fn edit_note(id: usize) {
+    println!("Edit")
 }
