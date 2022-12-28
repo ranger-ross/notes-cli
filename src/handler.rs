@@ -6,7 +6,6 @@ use crate::repository;
 use chrono::Utc;
 
 pub fn handle_command(args: NoteArgs) {
-
     match database::init_database() {
         Ok(()) => (),
         Err(error) => panic!("Problem opening the database file: {:?}", error),
@@ -49,12 +48,18 @@ fn list_notes() {
         return;
     }
 
-    let result = notes.into_iter().map(|note| {
-        let mut line = String::from("- ");
-        line.push_str(note.title.as_str());
-        line.push_str("\n");
-        line
-    }).collect::<String>();
+    let result = notes
+        .into_iter()
+        .enumerate()
+        .map(|(i, note)| {
+            let mut line = String::from("[");
+            line.push_str(i.to_string().as_str());
+            line.push_str("] - ");
+            line.push_str(note.title.as_str());
+            line.push_str("\n");
+            line
+        })
+        .collect::<String>();
 
     println!("{}", result);
 }
