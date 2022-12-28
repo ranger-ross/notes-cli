@@ -15,7 +15,7 @@ pub fn handle_command(args: NoteArgs) {
         NoteAction::List => list_notes(),
         NoteAction::Show => println!("Show"),
         NoteAction::Create { name } => create_note(name),
-        NoteAction::Delete => println!("Delete"),
+        NoteAction::Delete { id } => delete_note(id),
         NoteAction::Edit => println!("Edit"),
     }
 }
@@ -38,6 +38,8 @@ fn create_note(name: Option<String>) {
     };
 
     repository::insert_note(note);
+    println!("Note added!");
+    list_notes();
 }
 
 fn list_notes() {
@@ -62,4 +64,14 @@ fn list_notes() {
         .collect::<String>();
 
     println!("{}", result);
+}
+
+fn delete_note(id: usize) {
+    match repository::delete_note(id) {
+        Ok(()) => {
+            println!("Removed note");
+            list_notes();
+        }
+        Err(err) => println!("Error deleting note, {:?}", err),
+    };
 }

@@ -15,7 +15,9 @@ pub enum NoteAction {
     /// Edit a note by note id
     Edit,
     /// Delete a note by note id
-    Delete,
+    Delete { 
+        id: usize 
+    },
     /// Display a note by note id
     Show,
 }
