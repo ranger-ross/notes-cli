@@ -6,11 +6,16 @@ pub struct NoteArgs {
 
 #[derive(clap::Subcommand)]
 pub enum NoteAction {
+    /// Show a list of avaiable notes
     List,
+    /// Create a new note
     Create { 
         name: Option<String> 
     },
+    /// Edit a note by note id
     Edit,
+    /// Delete a note by note id
     Delete,
+    /// Display a note by note id
     Show,
 }
