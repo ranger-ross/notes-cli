@@ -101,6 +101,8 @@ fn edit_note(id: usize) {
     notes[id].body = data;
 
     repository::save_all_notes(notes);
+
+    show_note(id);
 }
 
 /// Creates a temp file and and opens that file with the default system editor.

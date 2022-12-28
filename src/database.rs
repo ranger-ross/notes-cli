@@ -13,7 +13,8 @@ const DEFAULT_DATABASE_STATE: &str = r#"{
 }"#;
 
 fn get_database_file() -> String {
-    String::from("./note-cli-database.json")
+    let dir = home::home_dir().unwrap().display().to_string();
+    String::from(dir + "/.note-cli-database.json")
 }
 
 /**
