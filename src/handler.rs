@@ -13,7 +13,7 @@ pub fn handle_command(args: NoteArgs) {
 
     match args.action {
         NoteAction::List => list_notes(),
-        NoteAction::Show => println!("Show"),
+        NoteAction::Show { id } => show_note(id),
         NoteAction::Create { name } => create_note(name),
         NoteAction::Delete { id } => delete_note(id),
         NoteAction::Edit => println!("Edit"),
@@ -74,4 +74,16 @@ fn delete_note(id: usize) {
         }
         Err(err) => println!("Error deleting note, {:?}", err),
     };
+}
+
+fn show_note(id: usize) {
+    let notes = repository::get_all_notes();
+
+    let note = &notes[id];
+
+    if note.body.is_empty() {
+        println!("Note is empty");
+    } else {
+        println!("{}", note.body);
+    }
 }

@@ -9,15 +9,11 @@ pub enum NoteAction {
     /// Show a list of avaiable notes
     List,
     /// Create a new note
-    Create { 
-        name: Option<String> 
-    },
+    Create { name: Option<String> },
     /// Edit a note by note id
     Edit,
     /// Delete a note by note id
-    Delete { 
-        id: usize 
-    },
+    Delete { id: usize },
     /// Display a note by note id
-    Show,
+    Show { id: usize },
 }
