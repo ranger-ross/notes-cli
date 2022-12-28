@@ -122,8 +122,8 @@ fn open_editor(text: String) -> String {
 
     file.write_all(text.as_bytes()).unwrap();
 
-    // TODO: remove hardcoded vim
-    std::process::Command::new("/usr/bin/vim")
+    let editor = std::env::var("EDITOR").unwrap_or("/bin/vi".to_string());
+    std::process::Command::new(editor)
         .arg(&temp_file)
         .spawn()
         .expect("Error: Failed to run editor")

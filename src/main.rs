@@ -1,7 +1,7 @@
 mod command;
+mod database;
 mod handler;
 mod note;
-mod database;
 mod repository;
 
 use crate::command::NoteArgs;
