@@ -1,9 +1,13 @@
+use std::fs::OpenOptions;
+use std::io::Write;
+
 use crate::command::NoteAction;
 use crate::command::NoteArgs;
 use crate::database;
 use crate::note::Note;
 use crate::repository;
 use chrono::Utc;
+use rand::distributions::{Alphanumeric, DistString};
 
 pub fn handle_command(args: NoteArgs) {
     match database::init_database() {
@@ -16,7 +20,7 @@ pub fn handle_command(args: NoteArgs) {
         NoteAction::Show { id } => show_note(id),
         NoteAction::Create { name } => create_note(name),
         NoteAction::Delete { id } => delete_note(id),
-        NoteAction::Edit { id }  => edit_note(id),
+        NoteAction::Edit { id } => edit_note(id),
     }
 }
 
@@ -89,5 +93,46 @@ fn show_note(id: usize) {
 }
 
 fn edit_note(id: usize) {
-    println!("Edit")
+    let mut notes = repository::get_all_notes();
+    let note = &notes[id];
+    let text = &note.body;
+
+    let data = open_editor(text.to_string());
+    notes[id].body = data;
+
+    repository::save_all_notes(notes);
+}
+
+/// Creates a temp file and and opens that file with the default system editor.
+fn open_editor(text: String) -> String {
+    let temp_dir = "/tmp/notes-cli";
+    std::fs::create_dir_all(temp_dir).expect("Failed to create temp direcory");
+
+    let file_name = Alphanumeric.sample_string(&mut rand::thread_rng(), 16);
+
+    let temp_file = String::from(temp_dir) + "/" + &file_name + ".md";
+
+    let mut file = OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open(&temp_file)
+        .expect("Failed to create temp file");
+
+    file.write_all(text.as_bytes()).unwrap();
+
+    // TODO: remove hardcoded vim
+    std::process::Command::new("/usr/bin/vim")
+        .arg(&temp_file)
+        .spawn()
+        .expect("Error: Failed to run editor")
+        .wait()
+        .expect("Error: Editor returned a non-zero status");
+
+    let data = std::fs::read_to_string(&temp_file).expect("Failed to read from temp file");
+
+    std::fs::remove_file(&temp_file).expect("Failed to remove temp file");
+
+    data
 }

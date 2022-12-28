@@ -33,3 +33,13 @@ pub fn delete_note(id: usize) -> Result<(), Error> {
 
     Ok(())
 }
+
+pub fn save_all_notes(notes: Vec<Note>) {
+    let mut data = database::read_database().unwrap();
+    data.notes = notes;
+
+    match database::save_database(data) {
+        Ok(fc) => fc,
+        Err(e) => panic!("Problem updating the database file: {:?}", e),
+    }
+}
