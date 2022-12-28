@@ -44,6 +44,11 @@ fn create_note(name: Option<String>) {
 fn list_notes() {
     let notes = repository::get_all_notes();
 
+    if notes.is_empty() {
+        println!("No notes");
+        return;
+    }
+
     let result = notes.into_iter().map(|note| {
         let mut line = String::from("- ");
         line.push_str(note.title.as_str());
