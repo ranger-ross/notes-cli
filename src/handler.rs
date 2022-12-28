@@ -88,7 +88,7 @@ fn show_note(id: usize) {
     if note.body.is_empty() {
         println!("Note is empty");
     } else {
-        println!("{}", note.body);
+        termimad::print_text(&note.body);
     }
 }
 
